@@ -38,11 +38,30 @@ class _NumberColState extends State<NumberCol>
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _elementSize = _scrollController!.position.maxScrollExtent / 10;
-      setState(() {});
-
-      _scrollController!.animateTo(_elementSize * widget.animateTo,
-          duration: widget.duration, curve: widget.curve);
+      _calculateElementSizeAndAnimate();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant NumberCol oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animateTo != oldWidget.animateTo) {
+      _calculateElementSizeAndAnimate();
+    }
+  }
+
+  void _calculateElementSizeAndAnimate() {
+    setState(() {});
+
+    // Animate to the selected number
+    _scrollController!.animateTo(
+      _elementSize * widget.animateTo,
+      duration: widget.duration,
+      curve: widget.curve,
+    );
+
+    _scrollController!.animateTo(_elementSize * widget.animateTo,
+        duration: widget.duration, curve: widget.curve);
   }
 
   @override
